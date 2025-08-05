@@ -34,7 +34,7 @@ export function SearchField() {
         onKeyDown={(event) => {
           if (event.key !== 'Enter') return
           if (searchTerm.trim() === '') {
-            router.push('/projects')
+            router.push('/dashboard')
           } else {
             router.push(`/search?q=${searchTerm}`)
           }
@@ -45,7 +45,7 @@ export function SearchField() {
           className="absolute right-2.5 top-3 w-4 h-4 text-muted-foreground cursor-pointer"
           onClick={() => {
             setSearchTerm('')
-            router.push('/projects')
+            router.push('/dashboard')
           }}
         />
       )}

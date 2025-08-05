@@ -34,7 +34,7 @@ function CheckoutSuccess() {
 
         <h2 className="mt-8 text-3xl">Thank you for your purchase!</h2>
         {user ? (
-          <Button className="mt-8" href="/projects">
+          <Button className="mt-8" href="/dashboard">
             Let&apos;s get started
           </Button>
         ) : (

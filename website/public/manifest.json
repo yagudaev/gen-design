@@ -1,6 +1,6 @@
 {
-  "short_name": "AudiowaveAI",
-  "name": "AudiowaveAI",
+  "short_name": "GenDesign",
+  "name": "Gen Design",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
@@ -13,7 +13,7 @@
       "type": "image/png"
     }
   ],
-  "start_url": "/projects",
+  "start_url": "/dashboard",
   "background_color": "#ffffff",
   "display": "standalone",
   "scope": "/",

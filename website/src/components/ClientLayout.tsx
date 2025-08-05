@@ -165,7 +165,7 @@ function ShowImpersonatingBanner() {
             toast.success('Stopped impersonating')
 
             // move to their own projects page
-            window.location.href = '/projects'
+            window.location.href = '/dashboard'
           }}
         >
           Stop Impersonating

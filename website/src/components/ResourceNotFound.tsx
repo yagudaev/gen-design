@@ -11,7 +11,7 @@ export function ResourceNotFound({
   resourceName = 'Resource',
   breadcrumbs = [
     { label: 'Home', href: '/' },
-    { label: 'Projects', href: '/projects' },
+    { label: 'Dashboard', href: '/dashboard' },
   ],
 }: ResourceNotFoundProps) {
   return (
