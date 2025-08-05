@@ -48,14 +48,7 @@ async function authorize(credentials: {
   })
   if (!user) return null
 
-  const salt = user.passwordSalt ?? ''
-  const expectedPasswordHash = user.passwordHash
-  const actualPasswordHash = sha1(credentials.password + salt)
-  if (expectedPasswordHash === actualPasswordHash) {
-    const authUser = await toJWTAuthUser(user)
-    return authUser
-  }
-
+  // Password authentication disabled - use OAuth providers
   return null
 }
 

@@ -12,21 +12,12 @@ export async function userToJson(
 
   return {
     id: user.id,
-    firstName: user.firstName,
-    lastName: user.lastName,
     email: user.email,
-    referralSource: user.referralSource,
-    plan: user.plan,
+    name: user.name,
     accessToken: jwtUser.accessToken,
     admin: !!user.adminUser,
-    usedCredits: user.usedCredits,
-    totalCredits: user.totalCredits,
-    voice: user.voice,
     createdAt: serializeDate(user.createdAt),
     updatedAt: serializeDate(user.updatedAt),
-
-    impersonating: !!user.impersonatingUserId,
-    aiContext: user.aiContext,
   }
 }
 function serializeDate(date: Date) {

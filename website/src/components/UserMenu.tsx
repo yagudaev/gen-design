@@ -20,16 +20,7 @@ export function UserMenu({ user }: { user: SerializedUser }) {
   return (
     <Menu as="div" className="inline-block relative text-left">
       <Menu.Button className="flex gap-x-2 items-center text-sm text-slate-700">
-        <Badge
-          variant={user.plan === 'free' ? 'outline' : 'default'}
-          className={cn(
-            'text-xs text-slate-500',
-            user.plan === 'pro' && 'text-slate-100',
-          )}
-        >
-          {user.plan}
-        </Badge>
-        <span>{user.firstName?.trim() || user.email}</span>
+        <span>{user.name?.trim() || user.email}</span>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={gravatarUrl}

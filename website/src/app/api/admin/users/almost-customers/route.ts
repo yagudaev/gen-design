@@ -24,12 +24,14 @@ async function getHandler(req: Request) {
     SELECT
       u.id AS "userId",
       u.email,
-      u.plan,
+      -- Note: plan field was removed from User model
+      -- u.plan,
       u."createdAt"
     FROM "User" u
     WHERE u."createdAt" BETWEEN ${fromDate} AND ${toDate}
-      AND u.plan = 'free'
-      AND u."stripeCustomerId" IS NOT NULL
+      -- Note: plan and stripeCustomerId fields were removed from User model
+      -- AND u.plan = 'free'
+      -- AND u."stripeCustomerId" IS NOT NULL
   `
 
   const adminFilterQuery = filterOutAdmins

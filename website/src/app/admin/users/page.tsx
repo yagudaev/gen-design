@@ -34,21 +34,20 @@ export default function UsersPage() {
     fetchAdminUsers()
   }, [])
 
-  // scopes
-  const proUsers = allUsers.filter((user) => user.plan === 'pro')
+  // scopes - simplified since plan field is removed
   const adminUserIds = adminUsers.map((au) => au.userId)
 
   // apply scope
   const users = allUsers.filter((user) => {
     if (scope === 'all') return true
-    if (scope === 'pro') return user.plan === 'pro'
+    if (scope === 'pro') return false // No pro users since plan field is removed
     if (scope === 'admin') return adminUserIds.includes(user.id)
     return true
   })
 
   const filteredUsers = useMemo(() => {
     return users.filter((user) => {
-      const searchFields = [user.firstName, user.lastName, user.email]
+      const searchFields = [user.name, user.email]
       return searchFields.some((field) =>
         field?.toLowerCase().includes(searchTerm.toLowerCase()),
       )
@@ -119,7 +118,7 @@ export default function UsersPage() {
             className="text-left"
             onClick={() => setScope('pro')}
           >
-            {proUsers.length}
+            0 (removed)
           </Button>
         </div>
         <div>
@@ -161,21 +160,11 @@ export default function UsersPage() {
               header: ({ column }) => {
                 return (
                   <SortableColumnHeader column={column}>
-                    First Name
+                    Name
                   </SortableColumnHeader>
                 )
               },
-              accessorKey: 'firstName',
-            },
-            {
-              header: ({ column }) => {
-                return (
-                  <SortableColumnHeader column={column}>
-                    Last Name
-                  </SortableColumnHeader>
-                )
-              },
-              accessorKey: 'lastName',
+              accessorKey: 'name',
             },
             {
               header: ({ column }) => {
@@ -196,24 +185,7 @@ export default function UsersPage() {
                 )
               },
             },
-            {
-              header: ({ column }) => {
-                return (
-                  <SortableColumnHeader column={column}>
-                    Plan
-                  </SortableColumnHeader>
-                )
-              },
-              accessorKey: 'plan',
-              cell: ({ getValue }) => {
-                const plan = getValue<string>()
-                return (
-                  <Badge variant={plan === 'pro' ? 'default' : 'outline'}>
-                    {plan}
-                  </Badge>
-                )
-              },
-            },
+            // Plan column removed
             {
               header: ({ column }) => {
                 return (

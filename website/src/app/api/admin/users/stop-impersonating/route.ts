@@ -18,19 +18,9 @@ async function postHandler(
   userId: number,
   options: any,
 ) {
-  const user = await prisma.user.findUnique({
-    where: { id: userId },
-    include: { impersonatedBy: true },
-  })
-
-  for (const impersonator of user?.impersonatedBy || []) {
-    await prisma.user.update({
-      where: { id: impersonator.id },
-      data: { impersonatingUserId: null },
-    })
-  }
-
+  // Impersonation functionality has been removed
   return Response.json({
     status: 'OK',
+    message: 'Impersonation functionality is not available',
   })
 }

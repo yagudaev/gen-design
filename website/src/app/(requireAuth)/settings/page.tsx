@@ -34,15 +34,11 @@ export default function SettingsPage() {
 
   // const allowCustomOpenAIKey = canUseCustomOpenAIToken(user)
   const allowCustomOpenAIKey = true
-  const remainingCredits = user
-    ? Math.max(user.totalCredits - user.usedCredits, 0)
-    : 0
-  const usedCredits = user?.usedCredits ?? 0
-  const totalCredits = user?.totalCredits ?? 1
-  const usedCreditsPercentage = Math.min(
-    (usedCredits / totalCredits) * 100,
-    100,
-  )
+  // Credit functionality has been removed
+  const remainingCredits = 0
+  const usedCredits = 0
+  const totalCredits = 1
+  const usedCreditsPercentage = 0
 
   async function handleOpenBilling() {
     try {
@@ -119,42 +115,7 @@ export default function SettingsPage() {
           className="mt-6"
         />
 
-        <div className="flex mt-6">
-          <SimpleSelect
-            placeholder="Select Voice"
-            value={user?.voice || 'echo'}
-            onValueChange={(voice) => {
-              setUser((prevUser) => ({ ...prevUser, voice }) as SerializedUser)
-            }}
-          >
-            <SelectItem value="echo">Echo</SelectItem>
-            <SelectItem value="alloy">Alloy</SelectItem>
-            <SelectItem value="fable">Fable</SelectItem>
-            <SelectItem value="onyx">Onyx</SelectItem>
-            <SelectItem value="nova">Nova</SelectItem>
-            <SelectItem value="shimmer">Shimmer</SelectItem>
-          </SimpleSelect>
-
-          <Button
-            variant={'outline'}
-            className="ml-4"
-            onClick={async () => {
-              const voice = user?.voice
-              if (!voice) {
-                toast.error('Voice not set')
-                return
-              }
-              await updateVoice(voice)
-              toast.success('Voice updated')
-            }}
-          >
-            Update
-          </Button>
-
-          <Button href="/voices" variant={'link'} className="ml-4">
-            explore voices
-          </Button>
-        </div>
+        {/* Voice functionality has been removed */}
 
         {user?.admin && (
           // select conversion service, use SimpleSelect
@@ -187,63 +148,9 @@ export default function SettingsPage() {
           </div>
         )}
 
-        <div className="mt-6">
-          <label htmlFor="aiContext" className="block mb-2 font-medium">
-            AI Context
-          </label>
-          <Textarea
-            id="aiContext"
-            placeholder="Enter additional context about yourself and your goals for the AI..."
-            value={user?.aiContext ?? ''}
-            onChange={(e) => {
-              setUser(
-                (prevUser) =>
-                  ({
-                    ...prevUser,
-                    aiContext: e.target.value,
-                  }) as SerializedUser,
-              )
-            }}
-            rows={4}
-            className="w-full max-w-xl"
-          />
-          <Button
-            variant={'outline'}
-            className="mt-2"
-            onClick={async () => {
-              const res = await callApi<{ user: any }>('/api/user', {
-                method: 'PATCH',
-                body: JSON.stringify({
-                  aiContext: user?.aiContext,
-                }),
-              })
+        {/* AI Context functionality has been removed */}
 
-              if (res.user) {
-                toast.success('AI Context updated successfully!')
-              } else {
-                toast.error('Failed to update AI Context')
-              }
-            }}
-          >
-            Update AI Context
-          </Button>
-        </div>
-
-        <div className="mt-8 max-w-md">
-          <div className="flex justify-between items-center mb-2">
-            <span className="text-sm text-muted-foreground">Credits Used</span>
-            <span className="text-sm font-medium">
-              {formatNumber(user?.usedCredits ?? 0)} /{' '}
-              {formatNumber(user?.totalCredits ?? 0)}
-            </span>
-          </div>
-          <Progress value={usedCreditsPercentage} className="h-2" />
-          <div className="mt-1 text-sm text-muted-foreground">
-            {formatNumber(remainingCredits)} credits remaining (
-            {estimateDuration(remainingCredits)} of audio)
-          </div>
-          <BuyMoreCredits label="Buy more credits for $15" className="mt-4" />
-        </div>
+        {/* Credit functionality has been removed */}
 
         {/* <hr className="my-6" />
         <div className="mt-8">

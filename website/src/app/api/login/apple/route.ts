@@ -55,8 +55,7 @@ export async function POST(request: Request) {
       user = await prisma.user.create({
         data: {
           email: profile.email,
-          firstName: profile.name.firstName || '',
-          lastName: profile.name.lastName || '',
+          name: `${profile.name.firstName || ''} ${profile.name.lastName || ''}`.trim() || profile.email,
         },
         include: { adminUser: true },
       })

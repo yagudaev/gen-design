@@ -12,13 +12,11 @@ import { SerializedUser } from '@/types'
 export default function ProfilePage() {
   const userFromContext = useUser()
   const [user, setUser] = useState(userFromContext)
-  const [originalFirstName, setOriginalFirstName] = useState('')
-  const [originalLastName, setOriginalLastName] = useState('')
+  const [originalName, setOriginalName] = useState('')
 
   useEffect(() => {
     setUser(userFromContext)
-    setOriginalFirstName(userFromContext?.firstName ?? '')
-    setOriginalLastName(userFromContext?.lastName ?? '')
+    setOriginalName(userFromContext?.name ?? '')
   }, [userFromContext])
 
   return (
@@ -27,96 +25,49 @@ export default function ProfilePage() {
         <h1 className="text-5xl">Profile</h1>
 
         <div className="mt-8 space-y-4 max-w-md">
-          <div className="flex gap-4">
-            <div className="flex-1">
-              <label
-                htmlFor="firstName"
-                className="block mb-2 text-sm font-medium"
-              >
-                First Name
-              </label>
-              <TextField
-                value={user?.firstName ?? ''}
-                onChange={(e) => {
-                  setUser(
-                    (prevUser) =>
-                      ({
-                        ...prevUser,
-                        firstName: e.target.value,
-                      }) as SerializedUser,
-                  )
-                }}
-                onBlur={async () => {
-                  if (user?.firstName !== originalFirstName) {
-                    const res = await callApi<{ user: any }>('/api/user', {
-                      method: 'PATCH',
-                      body: JSON.stringify({
-                        firstName: user?.firstName,
-                      }),
-                    })
+          <div>
+            <label
+              htmlFor="name"
+              className="block mb-2 text-sm font-medium"
+            >
+              Name
+            </label>
+            <TextField
+              value={user?.name ?? ''}
+              onChange={(e) => {
+                setUser(
+                  (prevUser) =>
+                    ({
+                      ...prevUser,
+                      name: e.target.value,
+                    }) as SerializedUser,
+                )
+              }}
+              onBlur={async () => {
+                if (user?.name !== originalName) {
+                  const res = await callApi<{ user: any }>('/api/user', {
+                    method: 'PATCH',
+                    body: JSON.stringify({
+                      name: user?.name,
+                    }),
+                  })
 
-                    if (res.user) {
-                      setOriginalFirstName(user?.firstName ?? '')
-                      toast.success('First name updated successfully!')
-                    } else {
-                      setUser(
-                        (prevUser) =>
-                          ({
-                            ...prevUser,
-                            firstName: originalFirstName,
-                          }) as SerializedUser,
-                      )
-                      toast.error('Failed to update first name')
-                    }
+                  if (res.user) {
+                    setOriginalName(user?.name ?? '')
+                    toast.success('Name updated successfully!')
+                  } else {
+                    setUser(
+                      (prevUser) =>
+                        ({
+                          ...prevUser,
+                          name: originalName,
+                        }) as SerializedUser,
+                    )
+                    toast.error('Failed to update name')
                   }
-                }}
-              />
-            </div>
-
-            <div className="flex-1">
-              <label
-                htmlFor="lastName"
-                className="block mb-2 text-sm font-medium"
-              >
-                Last Name
-              </label>
-              <TextField
-                value={user?.lastName ?? ''}
-                onChange={(e) => {
-                  setUser(
-                    (prevUser) =>
-                      ({
-                        ...prevUser,
-                        lastName: e.target.value,
-                      }) as SerializedUser,
-                  )
-                }}
-                onBlur={async () => {
-                  if (user?.lastName !== originalLastName) {
-                    const res = await callApi<{ user: any }>('/api/user', {
-                      method: 'PATCH',
-                      body: JSON.stringify({
-                        lastName: user?.lastName,
-                      }),
-                    })
-
-                    if (res.user) {
-                      setOriginalLastName(user?.lastName ?? '')
-                      toast.success('Last name updated successfully!')
-                    } else {
-                      setUser(
-                        (prevUser) =>
-                          ({
-                            ...prevUser,
-                            lastName: originalLastName,
-                          }) as SerializedUser,
-                      )
-                      toast.error('Failed to update last name')
-                    }
-                  }
-                }}
-              />
-            </div>
+                }
+              }}
+            />
           </div>
 
           <div>

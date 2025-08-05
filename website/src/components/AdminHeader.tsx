@@ -70,7 +70,7 @@ export function AdminHeader() {
                     href="/settings"
                     className="text-sm text-primary-foreground"
                   >
-                    {user.email} ({user.plan})
+                    {user.email}
                   </NavLink>
                   {/* {user.plan !== 'pro' && (
                     <Button href="/upgrade">Upgrade</Button>
@@ -165,7 +165,7 @@ function MobileNavigation({ user }: { user?: SerializedUser | null }) {
                 </MobileNavLink>
                 <MobileNavLink href="/admin/scripts">Scripts</MobileNavLink>
                 <MobileNavLink href="/settings">
-                  {user.email} ({user.plan})
+                  {user.email}
                 </MobileNavLink>
                 <MobileNavLink href="#" onClick={() => signOut()}>
                   Logout

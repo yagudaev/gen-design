@@ -10,23 +10,8 @@ export const dynamic = 'force-dynamic'
 export async function POST(request: Request) {
   const body = await request.json()
 
-  const user = await prisma.user.findUnique({ where: { email: body.email } })
-  if (user) {
-    const token = sha1(Math.random().toString(36).substring(7))
-    const resetTokenExpiresAt = new Date(Date.now() + 1000 * 60 * 60 * 24) // 24 hours
-    const updatedUser = await prisma.user.update({
-      where: { id: user.id },
-      data: { resetToken: token, resetTokenExpiresAt },
-    })
-    await sendEmail({
-      to: body.email,
-      subject: 'Reset your password - Vibeflow',
-      html: `<p>Click <a href="${process.env.BASE_URL}/reset-password?token=${token}">here</a> to reset your password</p>`,
-    })
-    console.log('Sent email to user to reset password', body.email)
-  } else {
-    console.error('User not found, no need to send an email', body.email)
-  }
+  // Password reset functionality has been removed since resetToken fields were removed
+  console.log('Password reset request ignored - functionality not available', body.email)
 
   return Response.json({
     status: 'OK',

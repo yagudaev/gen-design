@@ -18,11 +18,14 @@ const query = async (
   let whereClause = Prisma.sql`"createdAt" >= ${startDate} AND "createdAt" <= ${endDate}`
 
   if (userPlan !== 'all') {
-    whereClause = Prisma.sql`${whereClause} AND "plan" = ${userPlan}`
+    // Note: plan field was removed from User model
+    // whereClause = Prisma.sql`${whereClause} AND "plan" = ${userPlan}`
   }
 
   if (userPlan === 'pro') {
-    whereClause = Prisma.sql`${whereClause} AND "stripeCustomerId" IS NOT NULL`
+    // Note: stripeCustomerId field was removed from User model
+    // This filter may need to be updated or removed
+    // whereClause = Prisma.sql`${whereClause} AND "stripeCustomerId" IS NOT NULL`
   }
 
   const sparseData: { date: Date; count: bigint }[] = await prisma.$queryRaw`

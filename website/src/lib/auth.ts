@@ -6,7 +6,7 @@ import GoogleProvider from 'next-auth/providers/google'
 import { addToNewsletter } from '@/newsletter'
 import { User } from '@/types'
 
-import { hashPassword } from './crypto'
+// import { hashPassword } from './crypto' // Disabled - password auth removed
 import { prisma } from './db'
 
 
@@ -20,41 +20,17 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
-    CredentialsProvider({
-      credentials: {
-        email: { label: 'Email', type: 'text' },
-        password: { label: 'Password', type: 'password' },
-      },
-      // TODO: we might get rid of this and use our own login method
-      async authorize(credentials): Promise<AuthUser | null> {
-        if (!credentials?.email || !credentials?.password) return null
-        if (
-          typeof credentials.email !== 'string' ||
-          typeof credentials.password !== 'string'
-        ) {
-          return null
-        }
-
-        const user = await prisma.user.findUnique({
-          where: {
-            email: credentials.email,
-          },
-          include: {
-            adminUser: true,
-          },
-        })
-        if (!user) return null
-
-        const salt = user.passwordSalt ?? ''
-        const expectedPasswordHash = user.passwordHash
-        const actualPasswordHash = hashPassword(credentials.password, salt)
-        if (expectedPasswordHash === actualPasswordHash) {
-          return fromDB(user)
-        }
-
-        return null
-      },
-    }),
+    // CredentialsProvider disabled - password authentication removed
+    // CredentialsProvider({
+    //   credentials: {
+    //     email: { label: 'Email', type: 'text' },
+    //     password: { label: 'Password', type: 'password' },
+    //   },
+    //   async authorize(credentials): Promise<AuthUser | null> {
+    //     // Password authentication disabled
+    //     return null
+    //   },
+    // }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
@@ -77,7 +53,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           user: user,
           accessToken: token.accessToken,
           refreshToken: token.refreshToken,
-          impersonatingUserId: token.impersonatingUserId,
+          // impersonatingUserId: token.impersonatingUserId, // Removed - field doesn't exist
         }
       }
 
@@ -88,20 +64,22 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
       // impersonate feature
       if (token.user && (token.user as any).id && (token.user as any).isAdmin) {
+        // Impersonation functionality disabled - impersonatingUser relation removed
         const adminUser = await prisma.user.findUnique({
           where: { id: Number((token.user as DBUser).id) },
           include: {
             adminUser: true,
-            impersonatingUser: { include: { adminUser: true } },
+            // impersonatingUser: { include: { adminUser: true } }, // Removed - relation doesn't exist
           },
         })
-        const impersonatingUser = adminUser?.impersonatingUser
+        // const impersonatingUser = adminUser?.impersonatingUser
 
-        if (impersonatingUser) {
-          ;(session.user as any) = fromDB(impersonatingUser)
-          // @ts-ignore
-          session.impersonating = true
-        }
+        // Impersonation disabled
+        // if (impersonatingUser) {
+        //   ;(session.user as any) = fromDB(impersonatingUser)
+        //   // @ts-ignore
+        //   session.impersonating = true
+        // }
       }
 
       ;(session as any).accessToken = token.accessToken as string
@@ -123,8 +101,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           const newUser = await prisma.user.create({
             data: {
               email: profile.email,
-              firstName: profile.given_name || '',
-              lastName: profile.family_name || '',
+              name: `${profile.given_name || ''} ${profile.family_name || ''}`.trim() || null,
+              // firstName: profile.given_name || '', // Removed - field doesn't exist
+              // lastName: profile.family_name || '', // Removed - field doesn't exist
             },
             include: { adminUser: true },
           })
@@ -145,10 +124,10 @@ function fromDB(user: DBUserWithAdmin) {
   return {
     id: String(user.id),
     email: user.email,
-    name: `${user.firstName} ${user.lastName}`,
+    name: user.name || '', // Use name field directly since firstName/lastName don't exist
     createdAt: user.createdAt,
     updatedAt: user.updatedAt,
-    impersonatingUserId: user.impersonatingUserId,
+    // impersonatingUserId: user.impersonatingUserId, // Removed - field doesn't exist
     isAdmin: !!user.adminUser,
   }
 }

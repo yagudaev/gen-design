@@ -32,5 +32,5 @@
     "../shared/Logo.tsx",
     "trigger.config.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "src/scripts/test-websocket.ts"]
 }

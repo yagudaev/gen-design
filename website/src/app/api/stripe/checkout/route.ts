@@ -23,24 +23,18 @@ async function handler(req: Request) {
       user = await prisma.user.findUnique({ where: { id: userId } })
     }
 
-    let customerId = user?.stripeCustomerId
+    // Note: stripeCustomerId field was removed from User model
+    // Creating a new customer each time since we can't store customer ID
+    let customerId = null
 
-    if (!customerId) {
+    if (user?.email) {
       const customer = await stripe.customers.create({
-        email: user?.email,
+        email: user.email,
       })
-
       customerId = customer.id
-
-      if (userId) {
-        await prisma.user.update({
-          where: { id: userId },
-          data: { stripeCustomerId: customerId },
-        })
-      } else {
-        // the customer here will be registered in the future
-        // TODO: test this works
-      }
+      
+      // Note: We can't store the customerId since that field was removed
+      // Consider adding it back to the User model if Stripe integration is needed
     }
 
     const checkoutSession = await stripe.checkout.sessions.create({

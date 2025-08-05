@@ -16,25 +16,22 @@ async function handler(req: Request, user: User, userId: number) {
     const body = await req.json()
     const user = await prisma.user.findUnique({ where: { id: userId } })
 
-    if (!user || !user.stripeCustomerId) {
+    if (!user) {
       return NextResponse.json(
         {
-          error: "You don't have a billing account yet. Make a purchase first.",
+          error: "User not found.",
         },
         { status: 400 },
       )
     }
 
-    const portalSession = await stripe.billingPortal.sessions.create({
-      customer: user.stripeCustomerId,
-      return_url: body.returnUrl,
-    })
-
-    const url = portalSession.url
-
-    return NextResponse.json({
-      url,
-    })
+    // Stripe customer ID functionality has been removed
+    return NextResponse.json(
+      {
+        error: "Billing portal is not available.",
+      },
+      { status: 400 },
+    )
   } catch (e) {
     console.error(e)
     return NextResponse.json(

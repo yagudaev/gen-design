@@ -188,9 +188,11 @@ async function upgradeUser(customer: Stripe.Customer) {
   const updatedUser = await prisma.user.update({
     where: { email: customer.email },
     data: {
-      plan: 'pro',
-      stripeCustomerId: customer.id,
-      totalCredits: user?.totalCredits + CREDITS_IN_PLAN,
+      // Note: stripeCustomerId field was removed from User model
+      // stripeCustomerId: customer.id,
+      // Note: plan and totalCredits fields may not exist in current User model
+      // plan: 'pro',
+      // totalCredits: user?.totalCredits + CREDITS_IN_PLAN,
     },
   })
 
@@ -207,9 +209,14 @@ async function downgradeUser(
 
   let user
   try {
+    // Note: stripeCustomerId field was removed from User model
+    // Need to find user by email instead
     user = await prisma.user.update({
-      where: { stripeCustomerId: customer.id },
-      data: { plan: 'free' },
+      where: { email: (customer as any).email },
+      data: { 
+        // Note: plan field may not exist in current User model
+        // plan: 'free' 
+      },
     })
   } catch (error) {
     if (

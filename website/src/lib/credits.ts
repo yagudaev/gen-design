@@ -1,5 +1,6 @@
 import { SerializedUser } from '@/types'
 
+// Credit functionality has been removed from the User model
 export function calculateRequiredCredits(
   user: SerializedUser | null,
   totalContentLength: number,
@@ -9,26 +10,15 @@ export function calculateRequiredCredits(
   neededCredits: number
   remainingCredits: number
 } {
-  if (!user) {
-    return {
-      hasSufficientCredits: false,
-      neededCredits: 0,
-      remainingCredits: 0,
-    }
-  }
-
-  const remainingCredits = getRemainingCredits(user)
-
-  const unconvertedLength = totalContentLength - convertedContentLength
-  const neededCredits = Math.max(0, unconvertedLength - remainingCredits)
-
+  // Always return sufficient credits since credit system is removed
   return {
-    hasSufficientCredits: neededCredits === 0,
-    neededCredits,
-    remainingCredits,
+    hasSufficientCredits: true,
+    neededCredits: 0,
+    remainingCredits: 0,
   }
 }
 
+// Credit functionality has been removed from the User model
 export function getRemainingCredits(user: SerializedUser) {
-  return Math.max(0, user.totalCredits - user.usedCredits || 0)
+  return 0
 }

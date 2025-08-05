@@ -126,7 +126,7 @@ async function authUsingCookies() {
 function fromDB(dbUser: DBUser): User {
   return {
     id: dbUser.id.toString(),
-    name: dbUser.firstName + ' ' + dbUser.lastName,
+    name: dbUser.name || '', // Use name field directly since firstName/lastName don't exist
     email: dbUser.email,
   }
 }

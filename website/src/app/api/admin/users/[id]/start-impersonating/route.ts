@@ -30,18 +30,9 @@ async function postHandler(
 
   const loggedInUserId = userId
 
-  const updatedUser = await prisma.user.update({
-    where: { id: loggedInUserId },
-    data: {
-      impersonatingUserId: Number(id),
-    },
-  })
-
+  // Impersonation functionality has been removed
   return Response.json({
-    status: 'OK',
-    user: {
-      id: updatedUser.id,
-      impersonating: !!updatedUser.impersonatingUserId,
-    },
-  })
+    status: 'error',
+    message: 'Impersonation functionality is not available',
+  }, { status: 400 })
 }

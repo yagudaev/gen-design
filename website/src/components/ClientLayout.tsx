@@ -106,10 +106,8 @@ function CrispChat() {
     if (user && config?.crisp?.id) {
       Crisp.session.setData({
         userId: user.id,
-        firstName: user.firstName,
-        lastName: user.lastName,
+        name: user.name,
         email: user.email,
-        plan: user.plan,
       })
     }
   }, [user])
@@ -125,9 +123,7 @@ function SentrySetup() {
       Sentry.setUser({
         id: user.id,
         email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        plan: user.plan,
+        name: user.name,
       })
     } else {
       Sentry.setUser(null)
@@ -154,10 +150,11 @@ function PostHogSetup() {
 function ShowImpersonatingBanner() {
   const user = useUser()
 
-  if (user?.impersonating) {
+  // Impersonation functionality has been removed
+  if (false) {
     return (
       <div className="p-2 text-center text-white bg-red-500">
-        Impersonating user {user.email}
+        Impersonating user {user?.email}
         <Button
           className="ml-2"
           onClick={async () => {

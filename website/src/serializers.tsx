@@ -40,20 +40,12 @@ export async function serializeUser(
 
   return {
     id: user.id,
-    firstName: user.firstName,
-    lastName: user.lastName,
+    name: user.name,
     email: user.email,
-    referralSource: user.referralSource,
-    plan: user.plan,
     accessToken: jwtUser.accessToken,
     admin: !!user.adminUser,
-    usedCredits: user.usedCredits,
-    totalCredits: user.totalCredits,
-    voice: user.voice,
     createdAt: serializeDate(user.createdAt),
     updatedAt: serializeDate(user.updatedAt),
-    impersonating: !!user.impersonatingUserId,
-    aiContext: user.aiContext,
   }
 }
 

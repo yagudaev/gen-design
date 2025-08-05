@@ -60,8 +60,7 @@ export async function POST(request: Request) {
       user = await prisma.user.create({
         data: {
           email: profile.email,
-          firstName: profile.given_name || '',
-          lastName: profile.family_name || '',
+          name: `${profile.given_name || ''} ${profile.family_name || ''}`.trim() || profile.email,
         },
         include: { adminUser: true },
       })

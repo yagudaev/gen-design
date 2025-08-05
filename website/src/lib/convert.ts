@@ -49,7 +49,11 @@ export async function convert(
       : convertUsingAzure
     : null
 
-  const voice = user.voice as Voice
+  // Note: voice field was removed from User model
+  // const voice = user.voice as Voice
+  // Default to a fallback voice since user.voice doesn't exist
+  const voice = 'alloy' as Voice // Default voice
+  
   // check if azure only voices are used
   const isAzureOnlyVoice = azureSpecificVoices.includes(voice as any)
   if (isAzureOnlyVoice) {
@@ -148,7 +152,7 @@ async function convertUsingOpenAI(
 
   const mp3 = await openai.audio.speech.create({
     model: 'tts-1',
-    voice: user.voice as OpenAIVoices,
+    voice: 'alloy' as OpenAIVoices, // Default voice since user.voice field doesn't exist
     input: text,
   })
   const buffer = Buffer.from(await mp3.arrayBuffer())
@@ -171,7 +175,7 @@ async function convertUsingAzure(
   chapterId: number,
   chunkId: number,
 ) {
-  const buffer = await synthesizeToBuffer(text, user.voice as OpenAIVoices)
+  const buffer = await synthesizeToBuffer(text, 'alloy' as OpenAIVoices) // Default voice since user.voice doesn't exist
   const url = await storeMp3(buffer, user.id, chapterId, chunkId)
 
   return url

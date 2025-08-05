@@ -28,15 +28,16 @@ export async function POST(request: Request) {
   /*
   const req = await request.json()
 
-  const salt = createSalt()
-  const passwordHash = hashPassword(req.password, salt)
+  // Password hashing removed since password fields no longer exist
+  // const salt = createSalt()
+  // const passwordHash = hashPassword(req.password, salt)
 
   const userData: UserData = {
     firstName: req.firstName,
     lastName: req.lastName,
     email: req.email,
-    passwordHash: passwordHash,
-    passwordSalt: salt,
+    // passwordHash: passwordHash, // Removed - field no longer exists
+    // passwordSalt: salt, // Removed - field no longer exists
     referralSource: req.referralSource,
   }
 
@@ -82,40 +83,19 @@ interface UserData {
   firstName: string
   lastName: string
   email: string
-  passwordHash: string
-  passwordSalt: string
+  // passwordHash: string // Removed - password fields no longer exist
+  // passwordSalt: string // Removed - password fields no longer exist
   referralSource: string
 }
 
+// Legacy user creation function - disabled since password authentication removed
 async function createUser(
   userData: UserData,
   stripeSessionId: string | undefined,
 ): Promise<User | null> {
-  let user
-  if (stripeSessionId) {
-    // avoid any funny business by checking the session ID with Stripe
-    const stripeSession =
-      await stripe.checkout.sessions.retrieve(stripeSessionId)
-    const stripeCustomerId = stripeSession.customer as string
-    const stripeEmail = stripeSession.customer_details?.email as string
-
-    console.log(
-      'Creating user with Stripe session:',
-      stripeSessionId,
-      stripeCustomerId,
-    )
-
-    if (stripeEmail !== userData.email) {
-      return null
-    }
-
-    user = prisma.user.update({
-      where: { stripeCustomerId: stripeCustomerId },
-      data: { ...userData, email: undefined },
-    })
-  } else {
-    user = prisma.user.create({ data: userData })
-  }
-
-  return user
+  // This function is disabled since:
+  // 1. Password authentication was removed 
+  // 2. UserData interface references removed password fields
+  // 3. Stripe integration may need to be updated for current User model
+  throw new Error('User creation via email/password is disabled. Use Google sign-in instead.')
 }

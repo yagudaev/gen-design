@@ -7,7 +7,7 @@ export async function toJWTAuthUser(user: DBUser) {
   const userInfo: JWTUserInfo = {
     id: user.id,
     email: user.email,
-    name: `${user.firstName} ${user.lastName}`,
+    name: user.name || '', // Use name field directly since firstName/lastName don't exist
     createdAt: user.createdAt,
     updatedAt: user.updatedAt,
   }

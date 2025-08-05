@@ -110,9 +110,11 @@ export default function EditUserPage(props: {
                   'id',
                   'createdAt',
                   'updatedAt',
-                  'passwordHash',
-                  'passwordSalt',
+                  // 'passwordHash', // Removed - field no longer exists
+                  // 'passwordSalt', // Removed - field no longer exists
                   'accessToken',
+                  'resetToken', // Hide reset token fields if they exist
+                  'resetTokenExpiresAt',
                 ].includes(key)
               )
                 return null

@@ -39,16 +39,7 @@ export default async function UserPage(props: {
         <h1 className="text-4xl font-bold">User Details</h1>
 
         <div className="flex gap-1">
-          {/* stripe */}
-          {user.plan === 'pro' && user.stripeCustomerId && (
-            <Button
-              variant="outline"
-              href={`https://manage.stripe.com/customers/${user.stripeCustomerId}`}
-              className="mr-4"
-            >
-              Stripe
-            </Button>
-          )}
+          {/* stripe - removed for now */}
           <Button
             variant="outline"
             href={`https://us.posthog.com/project/104579/person/${encodeURIComponent(
@@ -83,7 +74,7 @@ export default async function UserPage(props: {
 }
 
 function OverviewCard({ user }: { user: User }) {
-  const { passwordHash, passwordSalt, ...displayUser } = user
+  const displayUser = user
 
   return (
     <Card className="overflow-scroll">
@@ -188,9 +179,6 @@ function formatValue(value: any, key: string): string {
   if (typeof value === 'boolean') return value ? 'Yes' : 'No'
   if (typeof value === 'object') return JSON.stringify(value)
   if (key === 'createdAt' || key === 'updatedAt') return formatDateShort(value)
-  if (key === 'plan') return value === 'pro' ? 'Pro' : 'Free'
-  if (key === 'usedCredits' || key === 'totalCredits')
-    return formatNumber(value)
 
   return String(value)
 }

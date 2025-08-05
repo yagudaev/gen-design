@@ -12,22 +12,13 @@ export interface User {
 
 export interface SerializedUser {
   id: number
-  firstName: string | null
-  lastName: string | null
+  name: string | null
   email: string
-  referralSource: string | null
-  plan: string
   accessToken: string
   admin: boolean
-  usedCredits: number
-  totalCredits: number
-  voice: string
 
   createdAt: string
   updatedAt: string
-
-  impersonating: boolean
-  aiContext?: string | null
 }
 
 export interface JWTUserInfo extends JWTPayload {
@@ -161,8 +152,7 @@ export interface AdminChapter extends Omit<Chapter, 'project' | 'url'> {
   projectName: string
   user: {
     id: number
-    firstName: string | null
-    lastName: string | null
+    name: string | null
     email: string
   }
 }
