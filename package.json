@@ -1,0 +1,18 @@
+{
+  "private": true,
+  "name": "gen-design",
+  "workspaces": [
+    "shared",
+    "website"
+  ],
+  "scripts": {
+    "prepare": "husky install",
+    "dev": "cd website && yarn dev",
+    "build": "cd website && yarn build",
+    "lint": "cd website && yarn lint"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "prettier": "^3.5.3"
+  }
+}

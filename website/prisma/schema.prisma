@@ -1,0 +1,123 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING") // bypasses connection pooling
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  firstName String?
+  lastName  String?
+  email     String   @unique
+  passwordHash String?
+  passwordSalt String?
+  referralSource String?
+  resetToken String? @unique
+  resetTokenExpiresAt DateTime?
+
+  // payment processing
+  stripeCustomerId String? @unique
+  plan String @default("free")
+  usedCredits Int @default(0)
+  totalCredits Int @default(10000)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // admin controls
+  adminUser AdminUser?
+  impersonatingUserId Int?
+  impersonatingUser User? @relation("User", fields: [impersonatingUserId], references: [id])
+  impersonatedBy User[] @relation("User")
+
+  // user settings
+  voice String @default("echo")
+  aiContext String?
+  model String @default("openai")
+
+  conversations Conversation[]
+  chatMessages ChatMessage[]
+  transcriptions Transcription[]
+
+  // feature flags
+
+}
+
+model AdminUser {
+  id       Int      @id @default(autoincrement())
+  userId   Int     @unique
+  user    User     @relation(fields: [userId], references: [id])
+}
+
+model Conversation {
+  id        Int      @id @default(autoincrement())
+  name      String
+
+  slug      String?   @unique
+  public   Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  chatMessages ChatMessage[]
+  voice String?
+}
+
+model ChatMessage {
+  id        Int      @id @default(autoincrement())
+
+  userId Int
+  user User @relation(fields: [userId], references: [id])
+
+  conversationId Int
+  conversation Conversation @relation(fields: [conversationId], references: [id])
+
+  role      String
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model Transcription {
+  id            Int      @id @default(autoincrement())
+  userId        Int
+  user          User     @relation(fields: [userId], references: [id])
+
+  // Core transcription data
+  transcriptText String   @db.Text
+  audioFileName  String   // Stored audio file path/name
+  duration       Float    // Duration in seconds
+
+  // Metadata
+  targetApp     String?   // App where text was inserted
+  targetAppBundle String? // Bundle ID of target app
+  deviceName    String?   // Audio input device used
+  quality       String?   // Audio quality info
+
+  // Timestamps
+  createdAt     DateTime @default(now())
+  recordedAt    DateTime // When the recording started
+
+  // Future post-processing
+  processingStatus String @default("completed") // completed, pending, error
+  processingNotes  String? @db.Text
+
+  @@index([userId])
+  @@index([createdAt])
+}
+

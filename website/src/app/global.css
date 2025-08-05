@@ -1,0 +1,10 @@
+.audio-player-open #crisp-chatbox > div > a {
+  margin-bottom: 110px !important;
+}
+
+/* responsive for md size add more margin */
+@media (min-width: 768px) {
+  .audio-player-open #crisp-chatbox > div > a {
+    margin-bottom: 140px !important;
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "awa.ac"
+        }
+      ],
+      "destination": "https://www.audiowaveai.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.awa.ac"
+        }
+      ],
+      "destination": "https://www.audiowaveai.com/:path*",
+      "permanent": true
+    }
+  ]
+}

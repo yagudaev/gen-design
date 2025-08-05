@@ -1,0 +1,37 @@
+name: Build and Zip Extension Chrome Extension
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install --ignore "@prisma/client" --ignore "prisma"yarn --ignore-scripts
+        # run: yarn install
+
+      - name: cd into /chrome-extension
+        run: cd /chrome-extension
+
+      - name: Build
+        run: yarn build
+
+      - name: Upload extension artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: vite-web-extension
+          path: dist

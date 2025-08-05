@@ -1,0 +1,25 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Pre-commit hook to run swift-format on all Swift files
+echo "🎨 Running swift-format on Swift files..."
+
+# Check if swift-format is installed
+if ! command -v swift-format &> /dev/null; then
+    echo "❌ swift-format not found. Please install it with: brew install swift-format"
+    exit 1
+fi
+
+# Change to the repository root
+cd "$(git rev-parse --show-toplevel)"
+
+# Find and format all Swift files that are staged for commit
+git diff --cached --name-only --diff-filter=ACM | grep '\.swift$' | while read file; do
+    if [ -f "$file" ]; then
+        echo "Formatting: $file"
+        swift-format --in-place "$file"
+        git add "$file"
+    fi
+done
+
+echo "✅ Swift formatting complete"

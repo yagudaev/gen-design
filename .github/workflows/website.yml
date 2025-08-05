@@ -1,0 +1,68 @@
+name: Build Website
+
+on:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'yarn'
+
+      #  super slow, was trying to fix the canvas build
+      - name: Install build tools
+        run: sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
+
+      - name: Install dependencies
+        run: yarn install
+        env:
+          POSTGRES_PRISMA_URL: 'postgresql://user:pass@localhost:5432/db'
+          POSTGRES_URL_NON_POOLING: 'postgresql://user:pass@localhost:5432/db'
+          OPENAI_API_KEY: 'dummy-key'
+          GEMINI_API_KEY: 'dummy-key'
+          NEXTAUTH_SECRET: 'dummy-secret'
+          BASE_URL: 'http://localhost:3000'
+          AUTH_URL: 'http://localhost:3000'
+
+      - name: Run test
+        run: yarn test
+        working-directory: ./website
+        env:
+          POSTGRES_PRISMA_URL: 'postgresql://user:pass@localhost:5432/db'
+          POSTGRES_URL_NON_POOLING: 'postgresql://user:pass@localhost:5432/db'
+          OPENAI_API_KEY: 'dummy-key'
+          GEMINI_API_KEY: 'dummy-key'
+          NEXTAUTH_SECRET: 'dummy-secret'
+          BASE_URL: 'http://localhost:3000'
+          AUTH_URL: 'http://localhost:3000'
+
+      - name: Build
+        run: yarn build
+        working-directory: ./website
+        env:
+          POSTGRES_PRISMA_URL: 'postgresql://user:pass@localhost:5432/db'
+          POSTGRES_URL_NON_POOLING: 'postgresql://user:pass@localhost:5432/db'
+          OPENAI_API_KEY: 'dummy-key'
+          GEMINI_API_KEY: 'dummy-key'
+          NEXTAUTH_SECRET: 'dummy-secret'
+          BASE_URL: 'http://localhost:3000'
+          AUTH_URL: 'http://localhost:3000'
+
+    # - name: Upload source maps to Sentry
+    #   uses: getsentry/action-release@v1
+    #   with:
+    #     environment: production
+    #   env:
+    #     SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+    #     SENTRY_ORG: nano-3-labs
+    #     SENTRY_PROJECT: audiowaveai-website
