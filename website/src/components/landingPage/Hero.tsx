@@ -11,12 +11,12 @@ export function Hero() {
   return (
     <MarketingContainer className="pt-20 pb-16 text-center lg:pt-32">
       <h1 className="mx-auto max-w-4xl text-5xl font-medium tracking-tight font-display text-slate-900 sm:text-7xl">
-        Code Faster with Conversational AI 🚀
+        Design Smarter with AI-Powered Systems 🎨
       </h1>
       <p className="mx-auto mt-6 max-w-2xl text-lg tracking-tight text-slate-700">
-        Vibeflow is your AI pair programmer for macOS, helping you code, debug,
-        and learn faster through natural conversation by talking. No more
-        typing.
+        Gen Design helps designers create and explore AI-driven variations
+        using their existing design systems. Import, iterate, and innovate
+        while maintaining brand consistency.
       </p>
       <div className="flex gap-x-6 justify-center mt-10">
         <UserNavLink />

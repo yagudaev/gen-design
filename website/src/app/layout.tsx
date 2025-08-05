@@ -11,22 +11,22 @@ import { type Metadata } from 'next'
 import './global.css'
 
 // TODO: should these things be in the config?
-const title = 'Vibeflow - Voice AI assistant for coding'
-const description = 'Use your voice to code'
-const url = 'https://www.vibeflow.sh'
+const title = 'Gen Design - AI-Powered Design System Explorer'
+const description = 'Create and explore AI-driven design variations using your existing design systems'
+const url = 'https://gen-design.ai'
 const image = `${url}/opengraph-image.jpg`
 
 export const metadata: Metadata = {
   metadataBase: new URL(url),
   title: {
-    template: '%s - Vibeflow',
+    template: '%s - Gen Design',
     default: title,
   },
   description: description,
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
-    title: 'Vibeflow',
+    title: 'Gen Design',
     startupImage: [
       {
         url: '/splash/splash-1170x2532.png',

@@ -56,3 +56,4 @@ uploads/
 # Sentry
 .sentryclirc
 .env.sentry-build-plugin
+.venv/

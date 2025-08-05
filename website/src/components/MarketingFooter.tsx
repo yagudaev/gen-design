@@ -44,7 +44,7 @@ const navigation = {
   legal: [
     { name: 'Blog', href: '/blog' },
     // { name: 'Roadmap', href: 'https://audiowaveai.features.vote/board' },
-    { name: 'Support', href: 'mailto:michael@audiowaveai.com' },
+    { name: 'Support', href: 'mailto:support@gen-design.ai' },
     { name: 'Privacy', href: '/privacy' },
     { name: 'Terms', href: '/terms' },
   ],
@@ -250,7 +250,7 @@ export function MarketingFooter() {
           </div>
           <div className="mt-8 text-xs leading-5 text-gray-500 md:order-1 md:mt-0">
             <p>
-              Copyright &copy; {new Date().getFullYear()} Vibeflow. All rights
+              Copyright &copy; {new Date().getFullYear()} Gen Design. All rights
               reserved.
             </p>
             <p className="sm:mt-3">

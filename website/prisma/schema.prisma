@@ -9,9 +9,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("POSTGRES_PRISMA_URL")
-  directUrl = env("POSTGRES_URL_NON_POOLING") // bypasses connection pooling
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -86,7 +85,7 @@ model ChatMessage {
   conversation Conversation @relation(fields: [conversationId], references: [id])
 
   role      String
-  content   String   @db.Text
+  content   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -99,7 +98,7 @@ model Transcription {
   user          User     @relation(fields: [userId], references: [id])
 
   // Core transcription data
-  transcriptText String   @db.Text
+  transcriptText String
   audioFileName  String   // Stored audio file path/name
   duration       Float    // Duration in seconds
 
@@ -115,7 +114,7 @@ model Transcription {
 
   // Future post-processing
   processingStatus String @default("completed") // completed, pending, error
-  processingNotes  String? @db.Text
+  processingNotes  String?
 
   @@index([userId])
   @@index([createdAt])
