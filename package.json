@@ -3,13 +3,17 @@
   "name": "gen-design",
   "workspaces": [
     "shared",
-    "website"
+    "website",
+    "plugin"
   ],
   "scripts": {
     "prepare": "husky install",
     "dev": "cd website && yarn dev",
     "build": "cd website && yarn build",
-    "lint": "cd website && yarn lint"
+    "lint": "cd website && yarn lint",
+    "plugin:dev": "cd plugin && yarn watch",
+    "plugin:build": "cd plugin && yarn build",
+    "plugin:lint": "cd plugin && yarn lint"
   },
   "devDependencies": {
     "husky": "^9.1.7",
